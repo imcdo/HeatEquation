@@ -40,6 +40,13 @@ def fourier (l ,f, n_upper = 100):
         """
         return integrate.quad(lambda x : f(x) * np.sin(n * np.pi * x / l), -1 * l, l)[0]
 
+    def _sum_func(func_list, var):
+        total = 0
+        for f in func_list:
+            total += f(var)
+        return total
+            
+
     #------------------------------------------------------------------------------------------#
     """
     Returns the fourier function
@@ -50,5 +57,16 @@ def fourier (l ,f, n_upper = 100):
     list_fourier_sum = [lambda x : a(n) * np.cos(n * np.pi * x / l) + b(n) * 
         np.sin(n * np.pi * x / l) for n in range(1 , n_upper)]
 
-    fourier_func = lambda x: a0() / 2 + np.sum(list_fourier_sum)
+    fourier_func = lambda x: a0() / 2 + _sum_func(list_fourier_sum, x)
+
+    
     return fourier_func
+
+
+#tests
+func = fourier(1, lambda x: (abs(x) + x) / 2)
+
+print(func(-1))
+print(func(0))
+print(func(.5))
+print(func(1))

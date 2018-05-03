@@ -2,9 +2,11 @@ import scipy.integrate as integrate
 import numpy as np
 import matplotlib.pyplot as plt
 
-def fourier (l ,f):
+def fourier (l ,f, n_upper = 100):
 
 
+
+    #below are the functions used to solve
     def a0():
         """the a(0) term of a, calculate seperatly because it is a simple computation and
         we can start our n at 1
@@ -38,3 +40,15 @@ def fourier (l ,f):
         """
         return integrate.quad(lambda x : f(x) * np.sin(n * np.pi * x / l), -1 * l, l)[0]
 
+    #------------------------------------------------------------------------------------------#
+    """
+    Returns the fourier function
+    
+    Returns:
+        function -- the fourier function
+    """
+    list_fourier_sum = [lambda x : a(n) * np.cos(n * np.pi * x / l) + b(n) * 
+        np.sin(n * np.pi * x / l) for n in range(1 , n_upper)]
+
+    fourier_func = lambda x: a0() / 2 + np.sum(list_fourier_sum)
+    return fourier_func

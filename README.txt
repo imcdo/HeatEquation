@@ -1,0 +1,1 @@
+A python script that solves the heat equation given alpha squared, lenghth of bar, and a function

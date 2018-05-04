@@ -62,8 +62,8 @@ def fourier (l ,f, n_upper = 100):
     Returns:
         function -- the fourier function
     """
-    list_fourier_sum = [lambda x : a(n) * np.cos((n * np.pi * x) / l) + b(n) * 
-        np.sin((n * np.pi * x) / l) for n in range(1 , n_upper + 1)]
+    list_fourier_sum = (lambda x : a(n) * np.cos((n * np.pi * x) / l) + b(n) * 
+        np.sin((n * np.pi * x) / l) for n in range(1 , n_upper + 1))
 
     fourier_func = lambda x : a0() / 2.0 + _sum_func(list_fourier_sum, x)
     return fourier_func
@@ -77,6 +77,7 @@ def graph(func, l):
 #tests
 #if you wanna modify the testing, the lambda exquation is what is passed, and the length is the first param
 #the last param is the upper bound of n
-func = fourier(1, lambda x: x * x * x + 10, 4)
+func = fourier(1, lambda x: x, 100)
 
 graph(func, 1)
+

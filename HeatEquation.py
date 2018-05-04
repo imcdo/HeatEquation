@@ -21,12 +21,15 @@ def heat_equation(alpha_sqrd, l, f):
         Arguments:
             n {int} -- possition in the n
         """
-        pass
+        return integrate.quad(lambda x : f(x) * np.sin((1 / l) * n * np.pi * x) ,0, l)[0]
 
     pass
 
 
 def graph_heat_equation(heat_eq):
+    raise NotImplementedError
+
+def animate_heat_equation(heat_eq):
     raise NotImplementedError
     
 
@@ -34,6 +37,8 @@ def tests():
     l = 2
     alpha_sqrd = 2
     f = lambda x : x
+
+    
     raise NotImplementedError
 
 tests()

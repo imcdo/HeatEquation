@@ -1,6 +1,7 @@
 import scipy.integrate as integrate
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import animation
 
 def fourier (l ,f, n_upper = 100):
     """gets the fourier series of an expression
@@ -74,10 +75,34 @@ def graph(func, l):
     plt.plot(x, func(x))
     plt.show()
 
+
+def graph_ns(func, l, n_lower, n_high, save=False):
+    x = np.arange(-1 * l, l, .01)
+    fig, ax = plt.subplots()
+    line, = ax.plot(x, fourier (l, func, n_high)(x))
+       
+
+    def init():
+        line.set_data([],[])
+        return line,
+
+    def animate(n):
+        fourier_func = fourier(l, func, n + n_lower)
+        line.set_data(x,fourier_func(x))
+        return line,
+    anim = animation.FuncAnimation(fig, animate, init_func=init,  interval=1, frames=n_high - n_lower, blit=True )
+    if save:
+        # Set up formatting for the movie files
+        Writer = animation.writers['ffmpeg']
+        writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+        anim.save('sim.mp4', writer=writer)
+    plt.show()
+        
+
 #tests
 #if you wanna modify the testing, the lambda exquation is what is passed, and the length is the first param
 #the last param is the upper bound of n
-func = fourier(1, lambda x: x, 100)
+func = fourier(1, lambda x: x ** 2  + 2, 4)
+#graph(func, 1)
 
-graph(func, 1)
-
+graph_ns(lambda x:(abs(x) + x) /2, 1, 2, 40, save=False)

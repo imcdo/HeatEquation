@@ -99,10 +99,13 @@ def graph_ns(func, l, n_lower, n_high, save=False):
     plt.show()
         
 
-#tests
-#if you wanna modify the testing, the lambda exquation is what is passed, and the length is the first param
-#the last param is the upper bound of n
-func = fourier(1, lambda x: x ** 2  + 2, 4)
-#graph(func, 1)
+def tests(l, f, n_low=1, n_high=30):
+    #tests
+    #if you wanna modify the testing, the lambda exquation is what is passed, and the length is the first param
+    #the last param is the upper bound of n
+    func = fourier(l, f, n_high)
+    graph(func,l)
 
-graph_ns(lambda x:(abs(x) + x) /2, 1, 2, 40, save=False)
+    graph_ns(f, l, n_low, n_high, save=False)
+
+tests(1, lambda x:(abs(x) + x) /2)

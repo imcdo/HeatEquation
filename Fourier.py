@@ -108,4 +108,4 @@ def tests(l, f, n_low=1, n_high=30):
 
     graph_ns(f, l, n_low, n_high, save=False)
 
-tests(1, lambda x:(abs(x) + x) /2)
+tests(1, lambda x: np.cos(1/x) if x != 0 else 0)

@@ -24,7 +24,7 @@ def fourier (l ,f, n_upper = 100):
             number -- the integral over the given bounds of f(x)
         """
 
-        return integrate.quad(f, -1 * l, l)[0]
+        return (1 / l) * integrate.quad(f, -1 * l, l)[0]
     
     def a(n):
         """the a(n) term of a, calculate using f(x) * cos(pi*n*x / l)
@@ -36,7 +36,7 @@ def fourier (l ,f, n_upper = 100):
             number -- the integral over the given bounds of f(x) * cos(pi*n*x / l)
         """
 
-        return integrate.quad(lambda x : f(x) * np.cos((n * np.pi * x) / l), -1.0 * l, l)[0]
+        return (1 / l) * integrate.quad(lambda x : f(x) * np.cos((n * np.pi * x) / l), -1.0 * l, l)[0]
     
     def b(n):
         """the b(n) term of a, calculate using f(x) * sin(pi*n*x / l)
@@ -47,7 +47,7 @@ def fourier (l ,f, n_upper = 100):
         Returns:
             number -- the integral over the given bounds of f(x) * sin(pi*n*x / l)
         """
-        return integrate.quad(lambda x : f(x) * np.sin((n * np.pi * x) / l), -1.0 * l, l)[0]
+        return (1 / l) * integrate.quad(lambda x : f(x) * np.sin((n * np.pi * x) / l), -1.0 * l, l)[0]
 
     def _sum_func(func_list, var):
         total = 0.0
@@ -76,10 +76,13 @@ def graph(func, l):
     plt.show()
 
 
-def graph_ns(func, l, n_lower, n_high, save=False):
+def graph_ns(func, l, n_lower, n_high, save=False, show_func=False):
     x = np.arange(-1 * l, l, .01)
     fig, ax = plt.subplots()
     line, = ax.plot(x, fourier (l, func, n_high)(x))
+
+    if(show_func):
+        plt.plot(x, func(x), color='red')
        
 
     def init():
@@ -97,15 +100,17 @@ def graph_ns(func, l, n_lower, n_high, save=False):
         writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
         anim.save('sim.mp4', writer=writer)
     plt.show()
-        
 
-def tests(l, f, n_low=1, n_high=30):
+
+def tests(l, f, n_low=1, n_high=30, show_func=False):
     #tests
     #if you wanna modify the testing, the lambda exquation is what is passed, and the length is the first param
     #the last param is the upper bound of n
     func = fourier(l, f, n_high)
+    x = np.arange(-1 * l, l, .01)
+    plt.plot(x, f(x))
     graph(func,l)
 
-    graph_ns(f, l, n_low, n_high, save=False)
+    graph_ns(f, l, n_low, n_high, save=False,)
 
-tests(1, lambda x: np.cos(1/x) if x != 0 else 0)
+tests(3, lambda x: x, n_low=1, n_high=200, show_func=True)

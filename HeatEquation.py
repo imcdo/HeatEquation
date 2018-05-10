@@ -3,6 +3,12 @@ import scipy.integrate as integrate
 import matplotlib.pyplot as plt
 import fractions
 
+def _multi_sum(iter_func, *var):
+    total = 0
+    for func in iter_func:
+        total += func(*var)
+    return total
+
 def heat_equation(alpha_sqrd, l, f, n_upper=100):
     """
     returns the function for the heat equation, 
@@ -13,14 +19,7 @@ def heat_equation(alpha_sqrd, l, f, n_upper=100):
         alpha_sqrd {number} -- the alpha squared
         l {number} -- length of bar
         f {function} -- function f(x)
-    """ 
-    def _multi_sum(iter_func, *var):
-
-        total = 0
-        for func in iter_func:
-            total += func(*var)
-        return total
-            
+    """            
 
     def b(n):
         """calculates the b(n) for the heat equation
@@ -30,7 +29,7 @@ def heat_equation(alpha_sqrd, l, f, n_upper=100):
         """
         return (2/l) * integrate.quad(lambda x : f(x) * np.sin(n * np.pi * x / l) ,0, l)[0]
 
-    base_func = lambda x, t, n : b(n) * np.sin(np.pi * n * x / l) * np.e ** (-1 * alpha_sqrd * (np.pi ** 2) * (n ** 2)  * t / (l ** 2))
+    base_func = lambda x, t, n : b(n) * np.sin(n * np.pi * x / l) * np.e ** (-1 * alpha_sqrd * (np.pi ** 2) * (n ** 2)  * t / (l ** 2))
     return lambda x, t : _multi_sum((lambda x, t :base_func(x, t, n) for n in range(1, n_upper, 2)), x, t)
 
 def graph_heat_equation_t(alpha_sqrd, l, f, t=0):
@@ -46,11 +45,14 @@ def tests():
     l = 2
     alpha_sqrd = 2
     
-    f = lambda x : abs(x - 1) + x
+    f = lambda x : x ** 2
     #graph the original func
     domain = np.arange(0, l, .01)
     plt.plot(domain, f(domain), color="red")
 
     graph_heat_equation_t(alpha_sqrd, l, f)
+
+    graph_heat_equation_t(alpha_sqrd, l, f, t=.001)
+    graph_heat_equation_t(alpha_sqrd, l, f, t=.01)
     plt.show()
 tests()

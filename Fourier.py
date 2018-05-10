@@ -113,4 +113,4 @@ def tests(l, f, n_low=1, n_high=30, show_func=False):
 
     graph_ns(f, l, n_low, n_high, save=False,)
 
-tests(3, lambda x: x, n_low=1, n_high=200, show_func=True)
+#tests(3, lambda x: x, n_low=1, n_high=200, show_func=True)
